@@ -135,10 +135,6 @@ Requires:
 - [Documentation](https://agents-squads.com/docs)
 - [squads-cli](https://github.com/agents-squads/squads-cli)
 
-## History
-
-> Migrated from `andes-movements/andes-agents`. Rebuilt from scratch with the modern squads approach.
-
 ## License
 
 MIT
