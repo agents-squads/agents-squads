@@ -6,26 +6,14 @@
 >
 > We build AI systems designed to be learned — not black boxes, but transparent systems your team can study, modify, and own.
 
-## What is Agents Squads?
-
-Agents Squads is a framework for building and running AI agent teams using simple markdown files. No complex infrastructure, no microservices — just prompts that execute.
-
-```
-.agents/
-├── squads/              # Squad definitions
-│   └── research/
-│       ├── SQUAD.md     # Squad mission & config
-│       ├── analyst.md   # Agent definition
-│       └── scout.md     # Agent definition
-├── memory/              # Persistent cross-session memory
-└── outputs/             # Squad outputs
-```
-
 ## Quick Start
 
 ```bash
 # Install the CLI
 npm install -g squads-cli
+
+# Start infrastructure
+docker compose up -d
 
 # Initialize a project
 squads init
@@ -33,84 +21,172 @@ squads init
 # Check status
 squads status
 
-# Run a squad
-squads run research
+# View dashboard
+squads dash
 ```
 
-## Example Output
+## Structure
 
 ```
-  squads status
-
-  10/10 squads  │  memory: enabled
-
-  ┌────────────────────────────────────────────────────────┐
-  │ SQUAD           AGENTS  MEMORY        ACTIVITY         │
-  ├────────────────────────────────────────────────────────┤
-  │ engineering     5       1 entries     today            │
-  │ research        6       1 entries     yesterday        │
-  │ product         2       1 entries     2d ago           │
-  └────────────────────────────────────────────────────────┘
+agents-squads/
+├── hq/                      # Headquarters (coordination)
+│   ├── .agents/
+│   │   ├── squads/          # HQ-level squads
+│   │   └── memory/          # Cross-domain memory
+│   └── CLAUDE.md
+│
+├── domains/                 # Domain-specific squads
+│   ├── engineering/
+│   ├── research/
+│   ├── marketing/
+│   ├── operations/
+│   └── finance/
+│
+├── mcp/                     # MCP server configs
+├── docker/                  # Infrastructure configs
+├── docker-compose.yml       # Local services
+└── .env.example             # Environment template
 ```
 
-## Core Concepts
+## Infrastructure
 
-### Squads = Domain-Aligned Teams
+Local development stack:
 
-Each squad owns a domain and contains specialized agents:
+| Service | Port | Purpose |
+|---------|------|---------|
+| PostgreSQL | 5432 | Primary data store |
+| Redis | 6379 | Cache, queues |
+| Neo4j | 7474/7687 | Knowledge graph |
+| Langfuse | 3000 | LLM observability |
+| Jaeger | 16686 | Distributed tracing |
+| OTEL Collector | 4317 | Telemetry |
 
-| Squad | Purpose |
-|-------|---------|
-| engineering | Systems, infrastructure, code |
-| research | Analysis, insights, intelligence |
-| product | Features, roadmap, specifications |
-| customer | Leads, outreach, relationships |
+```bash
+# Start all services
+docker compose up -d
 
-### Agents = Markdown Prompts
+# View Langfuse (LLM costs/traces)
+open http://localhost:3000
 
-An agent is just a markdown file with a prompt:
+# View Jaeger (distributed traces)
+open http://localhost:16686
+```
+
+## Squads & Agents
+
+### Squad Definition (SQUAD.md)
 
 ```markdown
-# Research Analyst
+# Squad: Platform
+
+## Mission
+Maintain infrastructure and developer experience.
+
+## Goals
+
+### Active
+| Priority | Goal | Progress |
+|----------|------|----------|
+| P1 | Reduce build time to <3min | 60% |
+
+## Agents
+
+| Agent | Role | Trigger |
+|-------|------|---------|
+| infra-monitor | Monitor health | Scheduled |
+| ci-optimizer | Optimize builds | Manual |
+```
+
+### Agent Definition ({agent}.md)
+
+```markdown
+# CI Optimizer
 
 ## Purpose
-Analyze market data and produce actionable insights.
+Analyze and optimize CI/CD pipeline performance.
 
 ## Model
 claude-sonnet-4
 
 ## Tools
-- WebSearch
 - Read
-- Write
+- Bash
+- mcp__github__*
 
 ## Instructions
-1. Search for recent developments in the target market
-2. Analyze trends and patterns
-3. Write findings to outputs/
-```
-
-### Memory = Persistent Context
-
-Squads remember across sessions. No more starting from scratch:
-
-```bash
-# Query existing knowledge before researching
-squads memory query "competitor analysis"
-
-# Memory syncs automatically from git commits
+1. Analyze current build times
+2. Identify bottlenecks
+3. Implement optimizations
+4. Verify improvements
 ```
 
 ## CLI Commands
 
-| Command | Purpose |
-|---------|---------|
-| `squads init` | Initialize a squad project |
-| `squads status` | Overview of all squads |
-| `squads dash` | Full operational dashboard |
-| `squads run <squad>` | Execute a squad |
-| `squads memory query "<topic>"` | Search squad memory |
-| `squads goal set <squad> "<goal>"` | Set a goal |
+```bash
+# Status & Dashboard
+squads status              # All squads overview
+squads status engineering  # Single squad
+squads dash                # Full dashboard
+
+# Running
+squads run engineering     # Run a squad
+squads run engineering/ci-optimizer  # Run specific agent
+
+# Memory
+squads memory query "deployment"  # Search memory
+squads memory show engineering    # Squad memory
+
+# Goals
+squads goal list                          # All goals
+squads goal set engineering "Ship v2.0"   # Set goal
+squads goal progress engineering 75       # Update progress
+squads goal complete engineering          # Mark done
+```
+
+## MCP Servers
+
+Extend agent capabilities with MCP:
+
+```json
+{
+  "mcpServers": {
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"]
+    },
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server-supabase"]
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"]
+    }
+  }
+}
+```
+
+See [mcp/README.md](mcp/README.md) for full configuration.
+
+## Environment
+
+Copy `.env.example` to `.env` and configure:
+
+```bash
+# AI Providers
+ANTHROPIC_API_KEY=sk-ant-...
+
+# Infrastructure
+DATABASE_URL=postgresql://squads:squads@localhost:5432/squads
+REDIS_URL=redis://localhost:6379
+
+# Observability
+LANGFUSE_PUBLIC_KEY=pk-lf-...
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
+
+# Squads
+SQUADS_DAILY_BUDGET=50.00
+```
 
 ## Philosophy
 
@@ -119,21 +195,11 @@ squads memory query "competitor analysis"
 3. **Ownable over dependent** — Your team learns and maintains it
 4. **Execute over advise** — Systems that do work, not just chat
 
-## Installation
-
-```bash
-npm install -g squads-cli
-```
-
-Requires:
-- Node.js 18+
-- Claude Code CLI (for agent execution)
-
 ## Links
 
 - [Website](https://agents-squads.com)
+- [CLI](https://github.com/agents-squads/squads-cli)
 - [Documentation](https://agents-squads.com/docs)
-- [squads-cli](https://github.com/agents-squads/squads-cli)
 
 ## License
 

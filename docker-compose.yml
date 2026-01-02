@@ -1,0 +1,124 @@
+version: '3.8'
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Agents Squads - Local Infrastructure
+# ═══════════════════════════════════════════════════════════════════════════════
+# Start: docker compose up -d
+# Stop:  docker compose down
+# Logs:  docker compose logs -f [service]
+# ═══════════════════════════════════════════════════════════════════════════════
+
+services:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # PostgreSQL - Primary data store
+  # ─────────────────────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: squads-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: squads
+      POSTGRES_PASSWORD: squads_local_dev
+      POSTGRES_DB: squads
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U squads"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Redis - Caching, queues, pub/sub
+  # ─────────────────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: squads-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Neo4j - Knowledge graph
+  # ─────────────────────────────────────────────────────────────────────────────
+  neo4j:
+    image: neo4j:5-community
+    container_name: squads-neo4j
+    restart: unless-stopped
+    environment:
+      NEO4J_AUTH: neo4j/squads_local_dev
+      NEO4J_PLUGINS: '["apoc"]'
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt
+    volumes:
+      - neo4j_data:/data
+    healthcheck:
+      test: ["CMD", "neo4j", "status"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Langfuse - LLM Observability
+  # ─────────────────────────────────────────────────────────────────────────────
+  langfuse:
+    image: langfuse/langfuse:latest
+    container_name: squads-langfuse
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://squads:squads_local_dev@postgres:5432/squads
+      NEXTAUTH_SECRET: squads-local-secret-change-in-prod
+      NEXTAUTH_URL: http://localhost:3000
+      SALT: squads-local-salt-change-in-prod
+    ports:
+      - "3000:3000"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # OpenTelemetry Collector
+  # ─────────────────────────────────────────────────────────────────────────────
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: squads-otel
+    restart: unless-stopped
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./docker/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+      - "8888:8888"   # Prometheus metrics
+    depends_on:
+      - jaeger
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Jaeger - Distributed tracing UI
+  # ─────────────────────────────────────────────────────────────────────────────
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: squads-jaeger
+    restart: unless-stopped
+    environment:
+      COLLECTOR_OTLP_ENABLED: true
+    ports:
+      - "16686:16686"  # UI
+      - "14250:14250"  # gRPC
+
+volumes:
+  postgres_data:
+  redis_data:
+  neo4j_data:

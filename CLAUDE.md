@@ -2,40 +2,63 @@
 
 ## Overview
 
-This is the public showcase repository for the Agents Squads framework.
+Open-source framework for building AI agent teams.
 
 **Mantra**: "AI systems you can learn, understand & trust."
 
 ## Structure
 
 ```
-.agents/
-├── squads/              # Squad definitions
-│   └── example/         # Example squad
-│       ├── SQUAD.md     # Squad mission
-│       ├── researcher.md
-│       └── writer.md
-├── memory/              # Persistent memory
-├── outputs/             # Squad outputs
-└── commit-template.txt  # Git commit format
+agents-squads/
+├── hq/                  # Headquarters (coordination)
+├── domains/             # Domain squads
+│   ├── engineering/
+│   ├── research/
+│   ├── marketing/
+│   ├── operations/
+│   └── finance/
+├── mcp/                 # MCP server configs
+├── docker/              # Infrastructure configs
+└── docker-compose.yml   # Local services
 ```
 
-## Squads CLI
+## Getting Started
 
 ```bash
-# Install
+# Start infrastructure
+docker compose up -d
+
+# Install CLI
 npm install -g squads-cli
 
-# Commands
-squads status            # Overview
-squads dash              # Dashboard
-squads run <squad>       # Execute
-squads memory query "x"  # Search memory
+# Initialize
+squads init
+
+# Check status
+squads status
+```
+
+## Infrastructure
+
+| Service | URL |
+|---------|-----|
+| PostgreSQL | localhost:5432 |
+| Redis | localhost:6379 |
+| Neo4j | localhost:7474 |
+| Langfuse | localhost:3000 |
+| Jaeger | localhost:16686 |
+
+## CLI Commands
+
+```bash
+squads status           # Overview
+squads dash             # Dashboard
+squads run <squad>      # Execute
+squads memory query "x" # Search
+squads goal list        # Goals
 ```
 
 ## Git Commit Format
-
-All commits should use:
 
 ```
 <type>(<scope>): <subject>
@@ -46,9 +69,3 @@ All commits should use:
 
 Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ```
-
-## Links
-
-- Website: https://agents-squads.com
-- CLI: https://github.com/agents-squads/squads-cli
-- HQ: https://github.com/agents-squads/hq (private)
