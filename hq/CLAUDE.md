@@ -51,7 +51,7 @@ All domains share infrastructure via docker-compose:
 - Redis (cache/queues)
 - Neo4j (knowledge graph)
 - Langfuse (LLM observability)
-- OpenTelemetry (tracing)
+- Squads Bridge (CLI integration - coming soon)
 
 ```bash
 # Start infrastructure
@@ -59,7 +59,4 @@ docker compose up -d
 
 # View Langfuse
 open http://localhost:3000
-
-# View traces
-open http://localhost:16686
 ```

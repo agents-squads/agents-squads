@@ -46,7 +46,6 @@ squads status
 | Redis | localhost:6379 |
 | Neo4j | localhost:7474 |
 | Langfuse | localhost:3000 |
-| Jaeger | localhost:16686 |
 
 ## CLI Commands
 

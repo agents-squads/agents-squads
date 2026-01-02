@@ -58,8 +58,7 @@ Local development stack:
 | Redis | 6379 | Cache, queues |
 | Neo4j | 7474/7687 | Knowledge graph |
 | Langfuse | 3000 | LLM observability |
-| Jaeger | 16686 | Distributed tracing |
-| OTEL Collector | 4317 | Telemetry |
+| Squads Bridge | 8088 | CLI integration (coming soon) |
 
 ```bash
 # Start all services
@@ -67,9 +66,6 @@ docker compose up -d
 
 # View Langfuse (LLM costs/traces)
 open http://localhost:3000
-
-# View Jaeger (distributed traces)
-open http://localhost:16686
 ```
 
 ## Squads & Agents

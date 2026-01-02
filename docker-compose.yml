@@ -89,34 +89,22 @@ services:
       - "3000:3000"
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # OpenTelemetry Collector
+  # Squads Bridge - API for CLI integration (coming soon)
   # ─────────────────────────────────────────────────────────────────────────────
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:latest
-    container_name: squads-otel
-    restart: unless-stopped
-    command: ["--config=/etc/otel-collector-config.yaml"]
-    volumes:
-      - ./docker/otel-collector-config.yaml:/etc/otel-collector-config.yaml
-    ports:
-      - "4317:4317"   # OTLP gRPC
-      - "4318:4318"   # OTLP HTTP
-      - "8888:8888"   # Prometheus metrics
-    depends_on:
-      - jaeger
-
-  # ─────────────────────────────────────────────────────────────────────────────
-  # Jaeger - Distributed tracing UI
-  # ─────────────────────────────────────────────────────────────────────────────
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    container_name: squads-jaeger
-    restart: unless-stopped
-    environment:
-      COLLECTOR_OTLP_ENABLED: true
-    ports:
-      - "16686:16686"  # UI
-      - "14250:14250"  # gRPC
+  # bridge:
+  #   image: ghcr.io/agents-squads/squads-bridge:latest
+  #   container_name: squads-bridge
+  #   restart: unless-stopped
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #   environment:
+  #     DATABASE_URL: postgresql://squads:squads_local_dev@postgres:5432/squads
+  #     REDIS_URL: redis://redis:6379
+  #   ports:
+  #     - "8088:8088"
 
 volumes:
   postgres_data:
