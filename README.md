@@ -1,9 +1,19 @@
+<div align="center">
+
 # Agents Squads
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![CLI](https://img.shields.io/npm/v/squads-cli?label=squads-cli)](https://www.npmjs.com/package/squads-cli)
+### AI systems you can learn, understand, and trust.
 
-**AI systems you can learn, understand, and trust.**
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CLI](https://img.shields.io/npm/v/squads-cli?label=squads-cli&color=purple)](https://www.npmjs.com/package/squads-cli)
+[![Docs](https://img.shields.io/badge/docs-mintlify-green)](https://docs.agents-squads.com)
+[![Website](https://img.shields.io/badge/web-agents--squads.com-black)](https://agents-squads.com)
+
+[Website](https://agents-squads.com) · [Documentation](https://docs.agents-squads.com) · [CLI](https://github.com/agents-squads/squads-cli)
+
+</div>
+
+---
 
 > Trust requires understanding. Understanding requires learning.
 >
@@ -17,24 +27,24 @@ A framework for organizing autonomous AI agents into domain-aligned teams (squad
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     AGENTS SQUADS                            │
+│                      AGENTS SQUADS                          │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
-│  │ Engineering │  │  Research   │  │  Marketing  │  ...     │
-│  │    Squad    │  │    Squad    │  │    Squad    │          │
-│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘          │
-│         │                │                │                  │
-│         ▼                ▼                ▼                  │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │                 Shared Memory (Engram)               │    │
-│  └─────────────────────────────────────────────────────┘    │
-│                           │                                  │
-│                           ▼                                  │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │              Observability (Langfuse)                │    │
-│  └─────────────────────────────────────────────────────┘    │
-│                                                              │
+│                                                             │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
+│  │ Engineering │  │  Research   │  │  Marketing  │  ...    │
+│  │    Squad    │  │    Squad    │  │    Squad    │         │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘         │
+│         │                │                │                 │
+│         ▼                ▼                ▼                 │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │                 Shared Memory (Engram)               │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                           │                                 │
+│                           ▼                                 │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │              Observability (Langfuse)                │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -44,91 +54,47 @@ A framework for organizing autonomous AI agents into domain-aligned teams (squad
 # Install the CLI
 npm install -g squads-cli
 
-# Clone this repo for infrastructure
-git clone https://github.com/agents-squads/agents-squads
-cd agents-squads
-
-# Start services (Postgres, Redis, Neo4j, Langfuse)
-docker compose up -d
-
-# Initialize your project
+# Initialize in your project
 squads init
 
 # Check status
 squads dash
 ```
 
-## Project Structure
-
-```
-agents-squads/
-├── hq/                      # Headquarters (coordination)
-│   ├── .agents/
-│   │   ├── squads/          # Squad definitions
-│   │   └── memory/          # Cross-domain memory
-│   └── CLAUDE.md
-│
-├── domains/                 # Domain outputs
-│   ├── engineering/
-│   ├── research/
-│   ├── marketing/
-│   └── finance/
-│
-├── mcp/                     # MCP server configs
-├── docker/                  # Infrastructure
-├── docker-compose.yml       # Local services
-└── .env.example             # Environment template
-```
-
-## Infrastructure
-
-Local development stack:
-
-| Service | Port | Purpose |
-|---------|------|---------|
-| PostgreSQL | 5432 | Primary data store |
-| Redis | 6379 | Cache, queues, rate limiting |
-| Neo4j | 7474 | Knowledge graph |
-| Langfuse | 3000 | LLM observability |
+<details>
+<summary><strong>Full setup with infrastructure</strong></summary>
 
 ```bash
-# Start everything
+# Clone for local infrastructure (Postgres, Redis, Langfuse)
+git clone https://github.com/agents-squads/agents-squads
+cd agents-squads
+
+# Start services
 docker compose up -d
 
-# View Langfuse dashboard (costs, traces, evals)
-open http://localhost:3000
-
-# View Neo4j browser (knowledge graph)
-open http://localhost:7474
+# View dashboards
+open http://localhost:3000  # Langfuse (costs, traces)
 ```
 
-## Defining Squads
+</details>
 
-### SQUAD.md
+## How It Works
+
+### 1. Define Squads (Markdown)
 
 ```markdown
 # Engineering Squad
 
 ## Mission
-Ship reliable software. Reduce technical debt. Improve developer experience.
-
-## Goals
-
-| Priority | Goal | Progress |
-|----------|------|----------|
-| P1 | Reduce build time to <3min | 60% |
-| P2 | 90% test coverage on core | 45% |
+Ship reliable software. Reduce technical debt.
 
 ## Agents
-
-| Agent | Purpose | Trigger |
-|-------|---------|---------|
-| ci-optimizer | Optimize CI/CD | Manual |
-| code-reviewer | Review PRs | On PR |
-| tech-debt-tracker | Track debt | Weekly |
+- ci-optimizer: Optimize build pipelines
+- code-reviewer: Review PRs automatically
+- tech-debt-tracker: Track and report debt
 ```
 
-### Agent Definition
+### 2. Define Agents (Markdown)
 
 ```markdown
 # CI Optimizer
@@ -139,105 +105,72 @@ Analyze and optimize build pipelines.
 ## Model
 claude-sonnet-4
 
-## Tools
-- Bash(gh:*, git:*)
-- Read
-- Edit
-
 ## Instructions
 1. Analyze .github/workflows/
 2. Identify slow steps
 3. Add caching where beneficial
-4. Test changes locally
-5. Open PR with improvements
+4. Open PR with improvements
 ```
 
-## CLI Commands
+### 3. Run
 
 ```bash
-# Status
-squads status              # All squads
-squads dash                # Full dashboard
-
-# Execution
-squads run engineering     # Run squad
-squads run engineering/ci-optimizer  # Run agent
-
-# Memory
-squads memory query "auth" # Search
-squads memory show eng     # View
-
-# Goals
-squads goal set eng "Ship v2"
-squads goal progress eng 75
-squads goal complete eng
+squads run engineering           # Run full squad
+squads run engineering/ci-optimizer  # Run single agent
 ```
 
-See [squads-cli](https://github.com/agents-squads/squads-cli) for full documentation.
-
-## Environment Setup
+## CLI
 
 ```bash
-cp .env.example .env
+squads status              # All squads overview
+squads dash                # Full dashboard with metrics
+
+squads run <squad>         # Execute a squad
+squads run <squad>/<agent> # Execute specific agent
+
+squads memory query "auth" # Search across memory
+squads memory show <squad> # View squad memory
+
+squads goal set <squad> "Ship v2"
+squads goal progress <squad> 75
 ```
 
-Required variables:
+See [squads-cli](https://github.com/agents-squads/squads-cli) for full docs.
+
+## Infrastructure (Optional)
+
+Run locally with Docker for full observability:
+
+| Service | Port | Purpose |
+|---------|------|---------|
+| PostgreSQL | 5432 | Primary data store |
+| Redis | 6379 | Cache & rate limiting |
+| Langfuse | 3000 | LLM observability |
 
 ```bash
-# AI Provider
-ANTHROPIC_API_KEY=sk-ant-...
-
-# Database
-DATABASE_URL=postgresql://squads:squads@localhost:5432/squads
-REDIS_URL=redis://localhost:6379
-
-# Observability (optional but recommended)
-LANGFUSE_PUBLIC_KEY=pk-lf-...
-LANGFUSE_SECRET_KEY=sk-lf-...
-
-# Budget controls
-SQUADS_DAILY_BUDGET=50.00
-```
-
-## MCP Servers
-
-Extend agent capabilities:
-
-```json
-{
-  "mcpServers": {
-    "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": { "GITHUB_TOKEN": "..." }
-    },
-    "postgres": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres"],
-      "env": { "DATABASE_URL": "..." }
-    },
-    "engram": {
-      "command": "npx",
-      "args": ["-y", "@agents-squads/engram-mcp"]
-    }
-  }
-}
+docker compose up -d
 ```
 
 ## Philosophy
 
-1. **Simple over complex** — Markdown files, not microservices
-2. **Transparent over magic** — Readable prompts you can audit
-3. **Ownable over dependent** — Your team learns and maintains it
-4. **Execute over advise** — Systems that do work, not just chat
+| Principle | Meaning |
+|-----------|---------|
+| **Simple over complex** | Markdown files, not microservices |
+| **Transparent over magic** | Readable prompts you can audit |
+| **Ownable over dependent** | Your team learns and maintains it |
+| **Execute over advise** | Systems that do work, not just chat |
 
 ## Ecosystem
 
 | Project | Description |
 |---------|-------------|
 | [squads-cli](https://github.com/agents-squads/squads-cli) | CLI for managing squads |
-| [engram](https://github.com/agents-squads/engram) | Persistent memory system |
-| [agents-squads-web](https://agents-squads.com) | Website & docs |
+| [engram](https://github.com/agents-squads/engram) | Persistent memory for agents |
+| [docs](https://docs.agents-squads.com) | Full documentation |
+
+## Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
@@ -245,4 +178,10 @@ Extend agent capabilities:
 
 ---
 
-Built by [Agents Squads](https://agents-squads.com) — AI systems you can learn, understand, and trust.
+<div align="center">
+
+**[agents-squads.com](https://agents-squads.com)**
+
+AI systems you can learn, understand, and trust.
+
+</div>
