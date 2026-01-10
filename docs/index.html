@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQUAD.md - The Open Standard for Multi-Agent Teams</title>
+    <meta name="description" content="SQUAD.md defines multi-agent teams - roles, coordination, triggers, budgets. AGENTS.md for teams.">
+    <link rel="canonical" href="https://agents-squads.github.io/agents-squads/">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --text: #c9d1d9;
+            --accent: #a855f7;
+            --accent-light: #c084fc;
+            --code-bg: #161b22;
+            --border: #30363d;
+            --muted: #8b949e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-light);
+        }
+
+        .btn-secondary {
+            background: var(--code-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+        }
+
+        section {
+            margin: 3rem 0;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-light);
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .problem {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .problem-question {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+            background: var(--code-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .comparison {
+            display: grid;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        @media (min-width: 600px) {
+            .comparison {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .comparison-card {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .comparison-card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-light);
+        }
+
+        .comparison-card p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        .file-tree {
+            font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.875rem;
+            color: var(--muted);
+        }
+
+        .file-tree .highlight {
+            color: var(--accent);
+        }
+
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--muted);
+        }
+
+        blockquote cite {
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            font-style: normal;
+        }
+
+        .features {
+            display: grid;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        @media (min-width: 600px) {
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .feature {
+            padding: 1.5rem;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .feature h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+            color: var(--muted);
+        }
+
+        footer a {
+            color: var(--accent-light);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SQUAD.md</h1>
+            <p class="tagline">The open standard for multi-agent team orchestration</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/agents-squads/agents-squads/blob/main/SQUAD.md" class="btn btn-primary">Read the Spec</a>
+                <a href="https://github.com/agents-squads/squads-cli" class="btn btn-secondary">Get the CLI</a>
+            </div>
+        </header>
+
+        <section class="problem">
+            <p class="problem-question">AGENTS.md tells agents how to work on YOUR project.</p>
+            <p class="problem-question">But who tells agents how to work WITH EACH OTHER?</p>
+        </section>
+
+        <section>
+            <h2>The Problem</h2>
+            <p>Single agents hit limits. Enterprises need teams, not individuals. But there's no standard for multi-agent coordination.</p>
+            <p><strong>SQUAD.md</strong> defines multi-agent teams: roles, coordination patterns, triggers, and budgets.</p>
+        </section>
+
+        <section>
+            <h2>How It Works</h2>
+            <p>SQUAD.md uses YAML frontmatter with a Markdown body. Simple enough to write by hand, expressive enough for complex workflows.</p>
+            <pre><code>---
+schema: squad/v0.1
+name: engineering
+mission: Ship reliable software.
+budget:
+  daily: 50
+triggers:
+  - name: pr-review
+    agent: code-reviewer
+    condition: "event: pull_request.opened"
+---
+
+# Engineering Squad
+
+## Agents
+| Agent | Role | Trigger |
+|-------|------|---------|
+| code-reviewer | Review PRs | event |
+| ci-optimizer | Fix builds | event |
+
+## Workflow
+1. PR opened triggers code-reviewer
+2. CI failure triggers ci-optimizer
+3. Weekly debt report on Mondays</code></pre>
+        </section>
+
+        <section>
+            <h2>SQUAD.md Complements Existing Standards</h2>
+            <div class="comparison">
+                <div class="comparison-card">
+                    <h3>AGENTS.md</h3>
+                    <p>"How to work on this project"</p>
+                </div>
+                <div class="comparison-card">
+                    <h3>SQUAD.md</h3>
+                    <p>"How to work together"</p>
+                </div>
+                <div class="comparison-card">
+                    <h3>MCP</h3>
+                    <p>Tools agents can use</p>
+                </div>
+                <div class="comparison-card">
+                    <h3>Agent Skills</h3>
+                    <p>Capabilities agents have</p>
+                </div>
+            </div>
+            <p>Use them together:</p>
+            <pre class="file-tree">your-project/
+├── AGENTS.md          <span class="highlight"># Project guidance</span>
+├── CLAUDE.md          <span class="highlight"># Claude-specific (optional)</span>
+└── .agents/
+    └── squads/
+        └── engineering/
+            └── <span class="highlight">SQUAD.md   # Team definition</span></pre>
+        </section>
+
+        <section>
+            <h2>Key Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>Works with any AI</h3>
+                    <p>Vendor-neutral specification. Claude, GPT, Gemini, local models.</p>
+                </div>
+                <div class="feature">
+                    <h3>Just Markdown</h3>
+                    <p>YAML frontmatter + markdown body. No special tools required.</p>
+                </div>
+                <div class="feature">
+                    <h3>Battle-tested</h3>
+                    <p>Agents Squads runs their entire company with this format.</p>
+                </div>
+                <div class="feature">
+                    <h3>Budget Controls</h3>
+                    <p>Set daily, weekly, monthly spend limits per squad.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <blockquote>
+                "We don't want users paying for infra that might not produce expected outputs."
+                <cite>— Jorge Vidaurre, Agents Squads</cite>
+            </blockquote>
+        </section>
+
+        <section>
+            <h2>Get Started</h2>
+            <pre><code># Install the CLI
+npm install -g squads-cli
+
+# Initialize in your project
+squads init
+
+# Check your squads
+squads status</code></pre>
+        </section>
+
+        <footer>
+            <div class="links">
+                <a href="https://github.com/agents-squads/agents-squads">GitHub</a>
+                <a href="https://github.com/agents-squads/agents-squads/blob/main/SQUAD.md">Specification</a>
+                <a href="https://github.com/agents-squads/squads-cli">CLI</a>
+                <a href="https://agents-squads.com">Agents Squads</a>
+            </div>
+            <p>Proposed for <a href="https://agenticaifoundation.org">AAIF</a> consideration</p>
+            <p>MIT License</p>
+        </footer>
+    </div>
+</body>
+</html>
