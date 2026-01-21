@@ -2,16 +2,16 @@
 
 ---
 schema: squad/v0.1
-name: {squad-name}
-mission: "{One sentence describing what this squad accomplishes}"
-repo: {domain-repo}
+name: {SQUAD_ID}
+mission: "{SQUAD_DESCRIPTION}"
+repo: {SQUAD_ID}
 
 context:
   mcp: []
   skills: []
   memory:
     load:
-      - {squad-name}/shared
+      - {SQUAD_ID}/shared
   model:
     default: claude-sonnet-4
     expensive: claude-opus-4
@@ -25,11 +25,11 @@ budget:
 
 ## Mission
 
-{What problem space does this squad address? 2-3 sentences.}
+{GOAL}
 
 ## Slack Channel
 
-`#{squad-name}` - All squad activity, briefs, approvals, and coordination
+`#{SQUAD_ID}` - All squad activity, briefs, approvals, and coordination
 
 ## Agents
 
@@ -41,7 +41,7 @@ budget:
 
 ```yaml
 approvals:
-  channel: "#{squad-name}"
+  channel: "#{SQUAD_ID}"
   notify: ["@team"]
 
   policy:
