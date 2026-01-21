@@ -1,5 +1,7 @@
 # Agents Squads
 
+> This file is read by both **Claude Code** and **Gemini CLI** (via `context.fileName` config).
+
 ## Overview
 
 Open-source framework for building AI agent teams.

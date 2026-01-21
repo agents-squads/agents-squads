@@ -1,0 +1,37 @@
+{
+  "context": {
+    "fileName": "CLAUDE.md"
+  },
+  "tools": {
+    "enableHooks": true
+  },
+  "hooks": {
+    "enabled": true,
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "name": "squads-status",
+            "type": "command",
+            "command": "squads status",
+            "timeout": 10000,
+            "description": "Load squad context at session start"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "name": "squads-memory-sync",
+            "type": "command",
+            "command": "squads memory sync",
+            "timeout": 15000,
+            "description": "Sync memory on session end"
+          }
+        ]
+      }
+    ]
+  }
+}

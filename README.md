@@ -22,7 +22,7 @@
 
 ## What is this?
 
-A framework for organizing autonomous AI agents into domain-aligned teams (squads) with persistent memory, goal tracking, and observability. Built for Claude Code.
+A framework for organizing autonomous AI agents into domain-aligned teams (squads) with persistent memory, goal tracking, and observability. Works with **Claude Code** and **Gemini CLI**.
 
 **No complex infrastructure.** Agents are markdown files. Memory is markdown files. Run locally with Docker.
 
@@ -76,6 +76,30 @@ docker compose up -d
 # View dashboards
 open http://localhost:3000  # Langfuse (costs, traces)
 ```
+
+</details>
+
+## Multi-Tool Support
+
+Agents Squads works with multiple AI coding tools. Same agents, same memory, same CLI.
+
+| Tool | Config | Instructions |
+|------|--------|--------------|
+| **Claude Code** | `.claude/settings.json` | `CLAUDE.md` |
+| **Gemini CLI** | `.gemini/settings.json` | `CLAUDE.md` (configured) |
+
+Both tools share:
+- **Same instruction file** (`CLAUDE.md`) - Gemini is configured to read it
+- **Same hooks** - `squads status` on session start, `squads memory sync` on end
+- **Same CLI** - `squads` commands work identically
+
+<details>
+<summary><strong>Why CLAUDE.md instead of AGENT.md?</strong></summary>
+
+We use `CLAUDE.md` as the canonical file and configure Gemini to read it via `context.fileName`. This approach:
+- Requires zero symlinks (Gemini blocks them for security)
+- Maintains a single source of truth
+- Works with Claude Code's native file discovery
 
 </details>
 
