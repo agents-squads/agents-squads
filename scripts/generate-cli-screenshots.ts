@@ -176,7 +176,7 @@ async function main() {
       // Run command and capture output
       const output = execSync(cmd, {
         encoding: 'utf-8',
-        cwd: process.env.HOME + '/agents-squads/hq',
+        cwd: process.cwd(),
         env: { ...process.env, FORCE_COLOR: '1' }
       });
 

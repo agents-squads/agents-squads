@@ -49,9 +49,7 @@ squads memory query "customer feedback"
 All domains share infrastructure via docker-compose:
 - PostgreSQL (data)
 - Redis (cache/queues)
-- Neo4j (knowledge graph)
 - Langfuse (LLM observability)
-- Squads Bridge (CLI integration - coming soon)
 
 ```bash
 # Start infrastructure

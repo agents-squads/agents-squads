@@ -7,10 +7,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![CLI](https://img.shields.io/npm/v/squads-cli?label=squads-cli&color=purple)](https://www.npmjs.com/package/squads-cli)
 [![SQUAD.md](https://img.shields.io/badge/SQUAD.md-v0.1-purple)](SQUAD.md)
-[![Docs](https://img.shields.io/badge/docs-mintlify-green)](https://docs.agents-squads.com)
 [![Website](https://img.shields.io/badge/web-agents--squads.com-black)](https://agents-squads.com)
 
-[Website](https://agents-squads.com) · [SQUAD.md Spec](SQUAD.md) · [Documentation](https://docs.agents-squads.com) · [CLI](https://github.com/agents-squads/squads-cli)
+[Website](https://agents-squads.com) · [SQUAD.md Spec](SQUAD.md) · [CLI](https://github.com/agents-squads/squads-cli)
 
 </div>
 
@@ -38,7 +37,7 @@ A framework for organizing autonomous AI agents into domain-aligned teams (squad
 │         │                │                │                 │
 │         ▼                ▼                ▼                 │
 │  ┌─────────────────────────────────────────────────────┐   │
-│  │                 Shared Memory (Engram)               │   │
+│  │                   Shared Memory                      │   │
 │  └─────────────────────────────────────────────────────┘   │
 │                           │                                 │
 │                           ▼                                 │
@@ -201,12 +200,10 @@ See the full [SQUAD.md Specification](SQUAD.md) for details.
 | Project | Description |
 |---------|-------------|
 | [squads-cli](https://github.com/agents-squads/squads-cli) | CLI for managing squads |
-| [engram](https://github.com/agents-squads/engram) | Persistent memory for agents |
-| [docs](https://docs.agents-squads.com) | Full documentation |
 
 ## Contributing
 
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions welcome. Open an issue or submit a PR.
 
 ## License
 
