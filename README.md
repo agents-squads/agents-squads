@@ -2,7 +2,7 @@
 
 # Agents Squads
 
-### AI systems you can learn, understand, and trust.
+### Your AI workforce.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![CLI](https://img.shields.io/npm/v/squads-cli?label=squads-cli&color=purple)](https://www.npmjs.com/package/squads-cli)
@@ -15,110 +15,49 @@
 
 ---
 
-> Trust requires understanding. Understanding requires learning.
->
-> We build AI systems designed to be learned — not black boxes, but transparent systems your team can study, modify, and own.
-
-## What is this?
-
-A framework for organizing autonomous AI agents into domain-aligned teams (squads) with persistent memory, goal tracking, and observability. Works with **Claude Code** and **Gemini CLI**.
-
-**No complex infrastructure.** Agents are markdown files. Memory is markdown files. Run locally with Docker.
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      AGENTS SQUADS                          │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │ Engineering │  │  Research   │  │  Marketing  │  ...    │
-│  │    Squad    │  │    Squad    │  │    Squad    │         │
-│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘         │
-│         │                │                │                 │
-│         ▼                ▼                ▼                 │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │                   Shared Memory                      │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                           │                                 │
-│                           ▼                                 │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │              Observability (Langfuse)                │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
+One person + AI teammates = a real business. Finance, marketing, engineering, operations — for the cost of API calls, not salaries. Our company is the proof.
 
 ## Quick Start
 
 ```bash
-# Install the CLI
 npm install -g squads-cli
-
-# Initialize in your project
 squads init
-
-# Check status
 squads dash
 ```
 
-<details>
-<summary><strong>Full setup with infrastructure</strong></summary>
+Agents are markdown files. Memory is markdown files. Runs locally.
 
-```bash
-# Clone for local infrastructure (Postgres, Redis, Langfuse)
-git clone https://github.com/agents-squads/agents-squads
-cd agents-squads
+## What Makes Squads Different
 
-# Start services
-docker compose up -d
+| Feature | Agents Squads | CrewAI | AutoGen | LangGraph |
+|---------|:---:|:---:|:---:|:---:|
+| **No code required** | ✅ Markdown only | ❌ Python classes | ❌ Python classes | ❌ Python graphs |
+| **Persistent memory** | ✅ File-based, git-tracked | ⚠️ Optional | ⚠️ Optional | ❌ |
+| **Multi-tool support** | ✅ Claude Code + Gemini CLI | ❌ | ❌ | ❌ |
+| **Domain-aligned teams** | ✅ Squad architecture | ⚠️ Flat agents | ⚠️ Flat agents | ⚠️ Nodes |
+| **Goal + memory tracking** | ✅ Built-in CLI | ❌ | ❌ | ❌ |
+| **Self-hostable** | ✅ Docker, no SaaS required | ⚠️ Cloud-first | ❌ Azure-first | ❌ LangSmith |
+| **Open standard** | ✅ SQUAD.md spec | ❌ | ❌ | ❌ |
 
-# View dashboards
-open http://localhost:3000  # Langfuse (costs, traces)
-```
-
-</details>
-
-## Multi-Tool Support
-
-Agents Squads works with multiple AI coding tools. Same agents, same memory, same CLI.
-
-| Tool | Config | Instructions |
-|------|--------|--------------|
-| **Claude Code** | `.claude/settings.json` | `CLAUDE.md` |
-| **Gemini CLI** | `.gemini/settings.json` | `CLAUDE.md` (configured) |
-
-Both tools share:
-- **Same instruction file** (`CLAUDE.md`) - Gemini is configured to read it
-- **Same hooks** - `squads status` on session start, `squads memory sync` on end
-- **Same CLI** - `squads` commands work identically
-
-<details>
-<summary><strong>Why CLAUDE.md instead of AGENT.md?</strong></summary>
-
-We use `CLAUDE.md` as the canonical file and configure Gemini to read it via `context.fileName`. This approach:
-- Requires zero symlinks (Gemini blocks them for security)
-- Maintains a single source of truth
-- Works with Claude Code's native file discovery
-
-</details>
+**Key difference**: CrewAI, AutoGen, and LangGraph are orchestration libraries — you write code to wire agents together. Agents Squads is an operating system for AI workers — you write markdown to define teams, and the CLI handles orchestration.
 
 ## How It Works
 
-### 1. Define Squads (Markdown)
+### 1. Define your squad (markdown)
 
 ```markdown
 # Engineering Squad
 
 ## Mission
-Ship reliable software. Reduce technical debt.
+Ship reliable software.
 
 ## Agents
-- ci-optimizer: Optimize build pipelines
-- code-reviewer: Review PRs automatically
+- ci-optimizer: Optimize CI pipelines
+- code-reviewer: Review PRs
 - tech-debt-tracker: Track and report debt
 ```
 
-### 2. Define Agents (Markdown)
+### 2. Define your agents (markdown)
 
 ```markdown
 # CI Optimizer
@@ -127,7 +66,7 @@ Ship reliable software. Reduce technical debt.
 Analyze and optimize build pipelines.
 
 ## Model
-claude-sonnet-4
+claude-sonnet-4-5
 
 ## Instructions
 1. Analyze .github/workflows/
@@ -143,63 +82,67 @@ squads run engineering           # Run full squad
 squads run engineering/ci-optimizer  # Run single agent
 ```
 
-## CLI
+## CLI Reference
 
 ```bash
-squads status              # All squads overview
-squads dash                # Full dashboard with metrics
+squads init                    # Set up squads in your project
+squads dash                    # Full dashboard with metrics
+squads status <squad>          # Squad overview
 
-squads run <squad>         # Execute a squad
-squads run <squad>/<agent> # Execute specific agent
+squads run <squad>             # Execute a squad
+squads run <squad>/<agent>     # Execute specific agent
 
-squads memory query "auth" # Search across memory
-squads memory show <squad> # View squad memory
+squads memory query "auth"     # Search across memory
+squads memory show <squad>     # View squad memory
 
 squads goal set <squad> "Ship v2"
 squads goal progress <squad> 75
 ```
 
-See [squads-cli](https://github.com/agents-squads/squads-cli) for full docs.
+Full docs: [squads-cli](https://github.com/agents-squads/squads-cli)
+
+## Multi-Tool Support
+
+Same agents, same memory, same CLI — works with Claude Code and Gemini CLI.
+
+| Tool | Config | Instructions |
+|------|--------|--------------|
+| **Claude Code** | `.claude/settings.json` | `CLAUDE.md` |
+| **Gemini CLI** | `.gemini/settings.json` | `CLAUDE.md` (configured) |
 
 ## Infrastructure (Optional)
 
-Run locally with Docker for full observability:
+```bash
+git clone https://github.com/agents-squads/agents-squads
+cd agents-squads
+docker compose up -d     # Postgres, Redis, Langfuse
+```
 
 | Service | Port | Purpose |
 |---------|------|---------|
-| PostgreSQL | 5432 | Primary data store |
-| Redis | 6379 | Cache & rate limiting |
-| Langfuse | 3000 | LLM observability |
+| PostgreSQL | 5432 | Agent memory + state |
+| Redis | 6379 | Rate limiting |
+| Langfuse | 3000 | LLM cost + trace observability |
 
-```bash
-docker compose up -d
+## SQUAD.md Standard
+
+SQUAD.md is the open standard for multi-agent team orchestration. It complements [AGENTS.md](https://agents.md) and [MCP](https://modelcontextprotocol.io).
+
 ```
+AGENTS.md  → How to work on THIS project
+SQUAD.md   → How agents work TOGETHER as a team
+```
+
+See the full [SQUAD.md Specification](SQUAD.md).
 
 ## Philosophy
 
 | Principle | Meaning |
 |-----------|---------|
 | **Simple over complex** | Markdown files, not microservices |
-| **Transparent over magic** | Readable prompts you can audit |
-| **Ownable over dependent** | Your team learns and maintains it |
-| **Execute over advise** | Systems that do work, not just chat |
-
-## SQUAD.md Standard
-
-SQUAD.md is the open standard for multi-agent team orchestration. It complements [AGENTS.md](https://agents.md) (project guidance) and [MCP](https://modelcontextprotocol.io) (tool integration).
-
-```
-AGENTS.md  → How to work on THIS project
-SQUAD.md   → How agents work TOGETHER
-```
-
-See the full [SQUAD.md Specification](SQUAD.md) for details.
-
-## Ecosystem
-
-| Project | Description |
-|---------|-------------|
-| [squads-cli](https://github.com/agents-squads/squads-cli) | CLI for managing squads |
+| **Transparent over magic** | Readable prompts you can audit and own |
+| **Execute over advise** | Agents do work, they don't just chat |
+| **Results over promises** | We run our own company on this — customer zero |
 
 ## Contributing
 
@@ -215,6 +158,6 @@ Contributions welcome. Open an issue or submit a PR.
 
 **[agents-squads.com](https://agents-squads.com)**
 
-AI systems you can learn, understand, and trust.
+Your AI workforce.
 
 </div>
